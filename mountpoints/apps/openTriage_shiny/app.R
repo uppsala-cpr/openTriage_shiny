@@ -8,7 +8,10 @@ library(httr)
 fw_url = "https://raw.githubusercontent.com/dnspangler/openTriage/master/frameworks/uppsala_vitals"
 
 # Set this if you're not running this on the same server as the openTriage back-end
-server_url = "https://127.0.0.1"
+server_url = "localhost:443"
+httr::set_config(config(ssl_verifypeer = 0L))
+
+
 
 model_props = fromJSON(paste0(fw_url,"/models/model_props.json"))
 pretty_names = unlist(fromJSON(paste0(fw_url,"/models/pretty_names.json")))
@@ -26,9 +29,6 @@ feats = feats[rev(order(feats$gain)),]
 
 cat_names = gsub("disp_cats_","",feats$var)[grepl("disp_cats_",feats$var)]
 names(cat_names) = feats$name[grepl("disp_cats_",feats$var)]
-    
-
-httr::set_config(config(ssl_verifypeer = 0L))
 
 ui <- fluidPage(
 
@@ -55,7 +55,7 @@ ui <- fluidPage(
                          selected = model_props$feat_props$median$disp_prio),
             radioButtons("eval_avpu",
                          "Level of Consciousness (AVPU)",
-                         choices = list("Alert"="A","Verbal"="V","Conscious"="P","Unconscious"="U"),
+                         choices = list("Alert"="A","Verbal"="V","Pain"="P","Unconscious"="U"),
                          selected = "A"),
             sliderInput("eval_breaths",
                         "Breathing rate",

@@ -26,5 +26,10 @@ services:
       # Shiny Server!" diagnostics page.
       - './mountpoints/apps:/srv/shiny-server'
 
+# Remove if not running on same server as openTriage
+networks:
+  opentriage_default:
+    external: true
+
 volumes:
   shiny_logs:
